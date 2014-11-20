@@ -3,7 +3,7 @@ var DeployController;
 DeployController = (function() {
   function DeployController() {}
 
-  DeployController.prototype.deploy = function(req, res) {};
+  DeployController.prototype.deploy = function(req, res, next) {};
 
   return DeployController;
 
