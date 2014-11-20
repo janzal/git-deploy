@@ -1,11 +1,11 @@
 express = require("express")
 program = require("commander")
 winston = require("winston")
-info = require("./package.json")
+info = require("../package.json")
 path = require "path"
 
 # controllers
-DeployController = require("./src/deploy-controller")
+DeployController = require("../src/deploy-controller")
 
 # arguments
 program

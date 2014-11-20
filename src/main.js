@@ -10,7 +10,7 @@ info = require("../package.json");
 
 path = require("path");
 
-DeployController = require("./deploy-controller");
+DeployController = require("../src/deploy-controller");
 
 program.version(info.version).usage("[options] <configuration>").option("-p, --port <port>", "Port").parse(process.argv);
 
