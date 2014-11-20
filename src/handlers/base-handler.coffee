@@ -1,5 +1,5 @@
 class BaseHandler
-  extractRepositoryInfo: () ->
-    throw new Error 'Not implemented'
+  extractRepositoryInfo: (info) ->
+    throw new Error 'Not implemented yet'
 
 module.exports = BaseHandler;

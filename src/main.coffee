@@ -15,10 +15,10 @@ program
   .parse process.argv
 
 # instatiate logger
-logger = new (winston.Logger)(transports: [ new (winston.transports.Console)(colorize: true), new (winston.transports.File)(
-  filename: "./deploy.log"
-  timestamp: true
-) ])
+logger = new (winston.Logger)(transports: [ new (winston.transports.Console)(colorize: true),
+                                            new (winston.transports.File)(filename: "./deploy.log"
+                                                                          timestamp: true
+                                            ) ])
 
 # load config
 unless program.args[0]?
