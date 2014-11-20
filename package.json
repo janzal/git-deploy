@@ -1,5 +1,5 @@
 {
-  "name": "git-deploy",
+  "name": "node-git-deploy",
   "version": "0.0.1",
   "bin" : {
     "git-deploy" : "./index.js"
