@@ -1,13 +1,13 @@
 {
   "name": "node-git-deploy",
   "version": "0.0.4",
-  "bin" : {
-    "git-deploy" : "./index.js"
-    },
+  "bin": {
+    "git-deploy": "./index.js"
+  },
   "description": "Simple git-based deployment system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "gulp"
   },
   "repository": {
     "type": "git",
@@ -18,17 +18,17 @@
   "bugs": {
     "url": "https://github.com/janzal/git-deploy/issues"
   },
-  "scripts": {
-    "prepublish": "gulp"
-  },
   "homepage": "https://github.com/janzal/git-deploy",
   "dependencies": {
+    "async": "^0.9.0",
     "coffee-script": "^1.8.0",
     "commander": "^2.5.0",
     "express": "^4.10.2",
     "gulp": "^3.8.10",
     "gulp-coffee": "^2.2.0",
     "gulp-util": "^3.0.1",
+    "mkdirp": "^0.5.0",
+    "nodejs-microdb": "0.0.2",
     "winston": "^0.8.3"
   },
   "devDependencies": {

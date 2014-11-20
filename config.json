@@ -1,10 +1,12 @@
 {
+  "temp": "/tmp/git-deploy",
   "applications": {
     "firstApp": {
       "handler": "bitbucket",
       "post_deploy": "",
       "deploy": "",
-      "pre_deploy": ""
+      "pre_deploy": "",
+      "dest": "/Users/janzaloudek/Development/misc/xx/fckr"
     }
   }
 }

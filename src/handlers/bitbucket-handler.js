@@ -11,6 +11,15 @@ BitbucketHandler = (function(_super) {
     return BitbucketHandler.__super__.constructor.apply(this, arguments);
   }
 
+  BitbucketHandler.prototype.extractRepositoryInfo = function(info) {
+    var result;
+    return result = {
+      url: "git://bitbucket.org/" + info.repository.absolute_url,
+      name: info.repository.name,
+      author: info.user
+    };
+  };
+
   return BitbucketHandler;
 
 })(BaseHandler);

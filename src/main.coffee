@@ -16,9 +16,7 @@ program
 
 # instatiate logger
 logger = new (winston.Logger)(transports: [ new (winston.transports.Console)(colorize: true),
-                                            new (winston.transports.File)(filename: "./deploy.log"
-                                                                          timestamp: true
-                                            ) ])
+                                            new (winston.transports.File)({filename: "./deploy.log", timestamp: true}) ])
 
 # load config
 unless program.args[0]?
@@ -41,7 +39,7 @@ app.use (req, res, next) ->
 deployController = new DeployController()
 
 # routes
-app.get "/deploy/:", deployController.deploy.bind deployController
+app.get "/hooks/deploy/:application_id", deployController.deploy.bind deployController
 
 # ...and start listening
 server = app.listen program.port or 3929, ->
