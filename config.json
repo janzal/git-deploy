@@ -1,0 +1,9 @@
+{
+  "applications": {
+    "firstApp": {
+      "handler": "bitbucket",
+      "post_deploy": "",
+      "pre_deploy": ""
+    }
+  }
+}

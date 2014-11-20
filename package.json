@@ -1,0 +1,35 @@
+{
+  "name": "git-deploy",
+  "version": "0.0.1",
+  "bin" : {
+    "git-deploy" : "./index.js"
+    },
+  "description": "Simple git-based deployment system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janzal/git-deploy.git"
+  },
+  "author": "Jan Zaloudek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janzal/git-deploy/issues"
+  },
+  "homepage": "https://github.com/janzal/git-deploy",
+  "dependencies": {
+    "coffee-script": "^1.8.0",
+    "commander": "^2.5.0",
+    "express": "^4.10.2",
+    "gulp": "^3.8.10",
+    "gulp-coffee": "^2.2.0",
+    "gulp-util": "^3.0.1",
+    "winston": "^0.8.3"
+  },
+  "devDependencies": {
+    "del": "^0.1.3",
+    "gulp": "^3.8.10"
+  }
+}
