@@ -1,6 +1,6 @@
 {
   "name": "node-git-deploy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bin" : {
     "git-deploy" : "./index.js"
     },
@@ -17,6 +17,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/janzal/git-deploy/issues"
+  },
+  "scripts": {
+    "prepublish": "gulp"
   },
   "homepage": "https://github.com/janzal/git-deploy",
   "dependencies": {

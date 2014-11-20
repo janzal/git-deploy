@@ -3,6 +3,7 @@
     "firstApp": {
       "handler": "bitbucket",
       "post_deploy": "",
+      "deploy": "",
       "pre_deploy": ""
     }
   }
