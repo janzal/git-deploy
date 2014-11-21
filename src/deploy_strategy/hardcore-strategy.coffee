@@ -1,29 +1,40 @@
-GitDeploy = require '../git-deploy'
-{exec} = require 'child_process'
-async = require 'async'
+BaseStrategy = require './base-strategy'
 
-class GitDeploy extends EventEmitter
-  @EventTypes =
-    pre_deploy: "pre_deploy",
-    post_deploy: "post_deploy"
-
-
-  constructor: (@application, @repository, @strategy, @config, @logger) ->
-    super()
-
-
+class HardcoreStrategy extends BaseStrategy
   deploy: (callback) ->
     callback = (()->) unless callback?
 
-    unless @config.applications[@application]?
-      return callback(new Error("Application '#{@application}' is not configured"))
+    commands = @prepareCommands_()
 
-    @emit GitDeploy.EventTypes.pre_deploy
-    @strategy.deploy @application, @repository, @config, @logger
-    @emit GitDeploy.EventTypes.post_deploy, err
-    @logger.error err if err
-    callback(err)
+    @processCommands_ commands, (err) =>
+      @logger.error err if err
+      callback(err)
 
+
+  prepareCommands_: () ->
+    temp_path = "#{@config.temp}/#{@application}"
+
+    [
+      "rm -rf #{temp_path}"
+      "mkdir -p #{temp_path}"
+      {
+        command: "git init",
+        options: {
+          cwd: temp_path
+        }
+      },
+      {
+        command: "git remote add origin #{@repository.url}",
+        options: {
+          cwd: temp_path
+        }
+      },
+      {
+
+      }
+    ]
+
+module.exports = HardcoreStrategy
 #  # make a new blank repository in the current directory
 #git init
 #

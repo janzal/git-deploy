@@ -5,7 +5,8 @@ del = require 'del'
 
 gulp.task 'clean', (cb) ->
   del([
-      './src/**/*.js'
+      './src/**/*.js',
+      './**/*.map',
     ], cb);
 
 gulp.task 'coffee', [ 'clean' ], () ->
@@ -14,3 +15,5 @@ gulp.task 'coffee', [ 'clean' ], () ->
     .pipe gulp.dest './src'
 
 gulp.task 'default', [ 'coffee' ]
+
+module.exports = gulp

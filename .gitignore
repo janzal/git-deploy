@@ -4,3 +4,4 @@ gulpfile.js
 src/**/*.js
 *.map
 .idea/
+*.cache

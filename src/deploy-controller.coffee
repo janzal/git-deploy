@@ -1,3 +1,5 @@
+GitDeploy = require './git-deploy'
+
 class DeployController
   constructor: () ->
 

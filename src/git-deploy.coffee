@@ -1,4 +1,3 @@
-{EventEmitter} = require 'events'
 {exec} = require 'child_process'
 async = require 'async'
 
@@ -8,65 +7,23 @@ class GitDeploy extends EventEmitter
     post_deploy: "post_deploy"
 
 
-  constructor: (@application, @repository, @config, @logger) ->
+  constructor: (@application, @repository, @strategy, @config, @logger) ->
     super()
 
 
-  deploy: (callback) ->
+  run: (callback) ->
     callback = (()->) unless callback?
 
     unless @config.applications[@application]?
       return callback(new Error("Application '#{@application}' is not configured"))
 
     @emit GitDeploy.EventTypes.pre_deploy
+    @strategy.deploy @application, @repository, @config, @logger
+    @emit GitDeploy.EventTypes.post_deploy, err
+    @logger.error err if err
+    callback(err)
 
-    commands = @prepareCommands_()
-
-    @processCommands_ commands, (err) =>
-      @emit GitDeploy.EventTypes.post_deploy, err
-      @logger.error err if err
-      callback(err)
-
-
-  prepareCommands_: () ->
-    temp_path = "#{@config.temp}/#{@application}"
-
-    [
-      "rm -rf #{temp_path}"
-      "mkdir -p #{temp_path}"
-      {
-        command: "git init",
-        options: {
-          cwd: temp_path
-        }
-      },
-      {
-        command: "git remote add origin #{@repository.url}",
-        options: {
-          cwd: temp_path
-        }
-      },
-      {
-        
-      }
-    ]
-
-
-  processCommands_: (commands, callback) ->
-    async.eachSeries commands, ((cmd, callback) =>
-      command = cmd
-      options = {}
-
-      unless typeof cmd is 'string'
-        command = cmd.command
-        options = cmd.options
-
-      child = exec command, options, callback
-      child.stdout.pipe process.stdout
-      child.stderr.pipe proceess.stderr
-    ), ((err) =>
-      callback err
-    )
+module.exports = GitDeploy
 
 #  # make a new blank repository in the current directory
 #git init
