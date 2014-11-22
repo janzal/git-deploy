@@ -22,15 +22,19 @@ applications:
     handler: "bitbucket" # handler - currently is supported only bitbucket and github
     strategy: "hardcore" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
 
-    # branch deploy configuration
-    master:
-        destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
-        # post_deploy and pre_deploy will be executed in context of destination folder
-        post_deploy: "composer install"
-        pre_deploy: ""
+    branches:
+        # branch deploy configuration
+        master:
+            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
+            # post_deploy and pre_deploy will be executed in context of destination folder
+            post_deploy: "composer install"
+            pre_deploy: ""
 
-    # ...and you can handle multiple branches
-    dev:
-        destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
+        # ...and you can handle multiple branches
+        dev:
+            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
+
+        staging:
+            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/staging"
 
 

@@ -17,37 +17,43 @@ Config is stored in yaml file. This tool is super easy to config! No magic, it j
 	#
 	# git-deploy example config
 	#
-
+	
 	# temp is used by some deploy strategies for storing some backup files
 	temp: "/tmp/git-deploy"
 	port: 3929
 	server_name: "janzal"
-
+	
 	# enable/disable ui
 	ui: true
-	# key-value basic authorization for UI controls, if they are not present, UI won't require any authorization
+	# key-value basic authorization for UI controls
 	# auth:
 	#    admin: "123456"
-
+	
 	# object of deployed applications
 	# keys are application identifiers and values are objects containing deployment details
 	applications:
-
+	
 	  firstApp: # app name
 	    # these three items are only mandatory for deployment
 	    handler: "bitbucket" # handler - currently is supported only bitbucket and github
 	    strategy: "hardcore" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
-
-	    # branch deploy configuration
-	    master:
-	        destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
-	        # post_deploy and pre_deploy will be executed in context of destination folder
-	        post_deploy: "composer install"
-	        pre_deploy: ""
-
-	    # ...and you can handle multiple branches
-	    dev:
-	        destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
+	
+	    branches:
+	        # branch deploy configuration
+	        master:
+	            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
+	            # post_deploy and pre_deploy will be executed in context of destination folder
+	            post_deploy: "composer install"
+	            pre_deploy: ""
+	
+	        # ...and you can handle multiple branches
+	        dev:
+	            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
+	
+	        staging:
+	            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/staging"
+	
+	
 
 
 
@@ -58,7 +64,11 @@ Config contains list of applications, which can be deployed on current server.
 -----------
 Deploy file should be in your project root. It is not mandatory to use .deployfile, but there you can override server actions. It uses YAML as well. Currently, there is only `post_deploy` parameter.
 
-	post_deploy: "composer update; composer install"
+	master:
+		post_deploy: "composer update; composer install"
+	
+	dev:
+		post_deploy: "npm install; composer install"
 	
 
 Instalation
