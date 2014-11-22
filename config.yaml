@@ -1,0 +1,36 @@
+#
+# git-deploy example config
+#
+
+# temp is used by some deploy strategies for storing some backup files
+temp: "/tmp/git-deploy"
+port: 3929
+server_name: "janzal"
+
+auth:
+    admin: "123456"
+
+# object of deployed applications
+# keys are application identifiers and values are objects containing deployment details
+applications:
+
+  firstApp: # app name
+    # these three items are only mandatory for deployment
+    handler: "bitbucket" # handler - currently is supported only bitbucket and github
+    destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp" # where to deploy application
+    strategy: "hardcore" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
+
+    # post_deploy and pre_deploy will be executed in context of destination folder
+    post_deploy: ""
+    pre_deploy: ""
+
+  secondApp: # app name
+    handler: "bitbucket" # handler - currently is supported only bitbucket and github
+    destination: "/Users/janzaloudek/Development/misc/xx/deploy/secondApp" # where to deploy application
+    strategy: "hardcore" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
+
+    # post_deploy and pre_deploy will be executed in context of destination folder
+    post_deploy: ""
+    pre_deploy: ""
+
+
