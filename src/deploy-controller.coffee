@@ -10,6 +10,7 @@ class DeployController
     unless application_config?
       return next new Error "Unkown application name #{req.params.application}"
 
+    application_config.name = req.params.application
     handlerFactory = new HandlerFactory req.body
 
     handler
@@ -20,7 +21,7 @@ class DeployController
 
     repository = handler.extractRepositoryInfo()
 
-    gitDeploy = new GitDeploy req.params.application, repository, application_config.strategy, req.config, req.logger
+    gitDeploy = new GitDeploy application_config, repository, application_config.strategy, req.config, req.logger
     gitDeploy.run (err) ->
       return next err unless err?
 
