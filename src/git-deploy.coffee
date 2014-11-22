@@ -15,11 +15,9 @@ class GitDeploy extends EventEmitter
   run: (callback) ->
     callback = (()->) unless callback?
 
-    unless @config.applications[@application]?
-      return callback(new Error("Application '#{@application}' is not configured"))
-
     @emit GitDeploy.EventTypes.pre_deploy
     @strategy.deploy @application, @repository, @config, @logger
+
     @emit GitDeploy.EventTypes.post_deploy, err
     @logger.error err if err
     callback(err)
