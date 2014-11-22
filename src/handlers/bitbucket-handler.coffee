@@ -5,7 +5,7 @@ class BitbucketHandler extends BaseHandler
 
   extractRepositoryInfo: () ->
     result =
-      url: "git://bitbucket.org/#{info.repository.absolute_url}"
+      url: "git://bitbucket.org/#{@info.repository.absolute_url}"
       name: @info.repository.name
       author: @info.user
 
