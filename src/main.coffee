@@ -82,7 +82,11 @@ webUiController = new WebUiController()
 ui_router.get "", webUiController.isRunning.bind webUiController
 
 # hook routes
-hook_router.post "/deploy/:application", deployController.deploy.bind deployController
+hook_router
+  .route "/deploy/:application"
+  .post deployController.deploy.bind deployController
+
+hook_router.use deployController.handlePostDeploy.bind deployController
 
 # apply routers to app
 app.use "/hooks", hook_router
