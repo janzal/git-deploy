@@ -16,11 +16,10 @@ class GitDeploy extends EventEmitter
     callback = (()->) unless callback?
 
     @emit GitDeploy.EventTypes.pre_deploy
-    @strategy.deploy @application, @repository, @config, @logger
-
-    @emit GitDeploy.EventTypes.post_deploy, err
-    @logger.error err if err
-    callback(err)
+    @strategy.deploy (err) =>
+      @emit GitDeploy.EventTypes.post_deploy, err
+      @logger.error err if err
+      callback(err)
 
 module.exports = GitDeploy
 
