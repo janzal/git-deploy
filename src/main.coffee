@@ -86,7 +86,7 @@ hook_router.get "/deploy/:application", deployController.deploy.bind deployContr
 
 # apply routers to app
 app.use "/hooks", hook_router
-app.use "/", ui_router
+app.use "/", ui_router if config.ui
 
 # ...and start listening
 server = app.listen program.port or config.port or 3929, ->
