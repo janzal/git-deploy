@@ -3,8 +3,6 @@ async = require 'async'
 
 class BaseStrategy
   constructor: (@application, @repository, @config, @logger) ->
-    super()
-
 
   deploy: (callback) ->
     callback new Error "Not implement yet"

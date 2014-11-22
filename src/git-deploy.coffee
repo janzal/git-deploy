@@ -1,4 +1,5 @@
 {exec} = require 'child_process'
+{EventEmitter} = require 'events'
 async = require 'async'
 
 class GitDeploy extends EventEmitter
