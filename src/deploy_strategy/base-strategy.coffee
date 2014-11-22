@@ -9,6 +9,7 @@ class BaseStrategy
 
 
   processCommands_: (commands, callback) ->
+    console.log commands
     async.eachSeries commands, ((cmd, callback) =>
       command = cmd
       options = {}
@@ -17,11 +18,11 @@ class BaseStrategy
         command = cmd.command
         options = cmd.options
 
-      # child = exec command, options, callback
+      callback() # child = exec command, options, callback
       # child.stdout.pipe process.stdout
       # child.stderr.pipe proceess.stderr
 
-      @logger.info "[#{@application.name}] from [#{@repository.name}]: #{command}"
+      @logger.info "#{@application.name} from #{@repository.name}: #{command}"
     ), ((err) =>
       callback err
     )
