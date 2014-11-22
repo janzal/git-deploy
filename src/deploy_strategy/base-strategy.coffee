@@ -21,7 +21,7 @@ class BaseStrategy
       # child.stdout.pipe process.stdout
       # child.stderr.pipe proceess.stderr
 
-      @logger.info "[#{@application}] from [#{@repository.name}]: #{command}"
+      @logger.info "[#{@application.name}] from [#{@repository.name}]: #{command}"
     ), ((err) =>
       callback err
     )
