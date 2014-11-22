@@ -12,7 +12,7 @@ class HardcoreStrategy extends BaseStrategy
 
 
   prepareCommands_: () ->
-    temp_path = "#{@config.temp}/#{@application}"
+    temp_path = "#{@config.temp}/#{@application.name}"
 
     [
       "rm -rf #{temp_path}"
@@ -28,9 +28,6 @@ class HardcoreStrategy extends BaseStrategy
         options: {
           cwd: temp_path
         }
-      },
-      {
-
       }
     ]
 
