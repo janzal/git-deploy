@@ -1,8 +1,6 @@
 BaseHandler = require './base-handler'
 
 class BitbucketHandler extends BaseHandler
-  constructor: (@info) ->
-
   extractRepositoryInfo: () ->
     result =
       url: "git://bitbucket.org/#{@info.repository.absolute_url}"
