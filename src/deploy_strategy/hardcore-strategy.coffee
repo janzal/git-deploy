@@ -1,18 +1,17 @@
 BaseStrategy = require './base-strategy'
+async = require 'async'
 
 class HardcoreStrategy extends BaseStrategy
-  deploy: (callback) ->
+  deploy: (branch, callback) ->
     callback = (()->) unless callback?
 
-    commands = @prepareCommands_()
+    commands = @prepareCommands_ branch
 
-    @processCommands_ commands, (err) =>
-      @logger.error err if err
+    @processCommands_ branch, commands, (err) =>
       callback(err)
 
-
-  prepareCommands_: () ->
-    temp_path = "#{@config.temp}/#{@application.name}"
+  prepareCommands_: (branch) ->
+    temp_path = "#{@config.temp}/#{@application.name}/#{branch}"
 
     [
       "rm -rf #{temp_path}"
@@ -28,6 +27,9 @@ class HardcoreStrategy extends BaseStrategy
         options: {
           cwd: temp_path
         }
+      },
+      {
+        command: "git fetch origin "
       }
     ]
 
