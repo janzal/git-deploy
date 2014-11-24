@@ -2,17 +2,18 @@ BaseHandler = require './base-handler'
 
 class GithubHandler extends BaseHandler
   @canHandle: (info) ->
-    url = info?.repository?.url?
+    url = info.repository?.url
 
     /github\.com/.test url
 
   extractRepositoryInfo: () ->
     branches = {}
+    refs = @info.ref.split "/"
+    branch = refs[2]
 
     for commit in @info.commits
-      branches[commit.branch] = [] unless branches[commit.branch]?
-
-      branches[commit.branch].push commit
+      branches[branch] = [] unless branches[branch]?
+      branches[branch].push commit
 
     result =
       branches: branches

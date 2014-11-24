@@ -1,4 +1,7 @@
 class BaseHandler
+  @canHandle: (info) ->
+    throw new Error 'Not implemented yet'
+
   constructor: (@info) ->
 
   extractRepositoryInfo: () ->
