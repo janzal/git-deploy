@@ -1,18 +1,19 @@
 GitDeploy = require './git-deploy'
 HandlerFactory = require './handlers/handler-factory'
 StrategyFactory = require './deploy_strategy/strategy-factory'
+DeployTransport = require './deploy-transport'
 
 class DeployController
   constructor: () ->
 
   deploy: (req, res, next) ->
+    application_config = req.application_config
+
+    logger = req.loggers[application_config.name]
+    logger.add DeployTransport, stream: res
+
     res.write "Deploying application #{req.params.application}\n"
-    application_config = req.config.applications[req.params.application]
 
-    unless application_config?
-      return next new Error "Unkown application name #{req.params.application}"
-
-    application_config.name = req.params.application
     handlerFactory = new HandlerFactory req.body
 
     handler
@@ -23,21 +24,24 @@ class DeployController
 
     repository = handler.extractRepositoryInfo()
 
-    strategyFactory = new StrategyFactory application_config, repository, req.config, req.logger
+    strategyFactory = new StrategyFactory application_config, repository, req.config, logger
     strategy
     try
       strategy = strategyFactory.getStrategyByName application_config.strategy
     catch error
       return next error
 
-    gitDeploy = new GitDeploy application_config, repository, strategy, req.config, req.logger
+    gitDeploy = new GitDeploy application_config, repository, strategy, req.config, logger
+    logger.deploy "Deploy of #{application_config.name} started"
     gitDeploy.run (err) ->
       return next err if err?
-      req.logger.info "App has been deployed!"
+      logger.deploy "App #{application_config.name} has been deployed!"
       res.end "Successfully deployed!\n"
       next()
 
   handlePostDeploy: (req, res, next) ->
+    logger = req.loggers[req.application_config.name]
+    logger.remove DeployTransport
 
 
 module.exports = DeployController;
