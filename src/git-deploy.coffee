@@ -1,6 +1,7 @@
 {exec} = require 'child_process'
 {EventEmitter} = require 'events'
 async = require 'async'
+mkdirp = require 'mkdirp'
 
 class GitDeploy extends EventEmitter
   @EventTypes =
@@ -15,11 +16,51 @@ class GitDeploy extends EventEmitter
   run: (callback) ->
     callback = (()->) unless callback?
 
-    @emit GitDeploy.EventTypes.pre_deploy
-    @strategy.deploy (err) =>
-      @emit GitDeploy.EventTypes.post_deploy, err
-      @logger.error err if err
-      callback(err)
+    branches = Object.keys @repository.branches
+    deployed_branches = (branch for branch in branches when @application.branches[branch]?)
+
+    async.each deployed_branches, ((branch, callback) =>
+      @emit GitDeploy.EventTypes.pre_deploy, branch
+
+      @logger.deploy "Deploying branch #{branch}"
+      branch_config = @application.branches[branch];
+
+      @processDeploy_ branch, branch_config, callback
+    ), callback
+
+  processDeploy_: (branch, branch_config, callback) ->
+    async.series [
+
+      (callback) =>
+        @logger.deploy "Creating destination folder"
+        mkdirp branch_config.destination, callback
+
+      (callback) =>
+        if branch_config.pre_deploy
+          @logger.deploy "Executing predeploy"
+          exec branch_config.pre_deploy, cwd: branch_config.destination, callback
+        else
+          callback null
+
+      (callback) =>
+        @logger.deploy "Deploying"
+        @deployBranch_ branch, callback
+
+      (callback) =>
+        if branch_config.post_deploy
+          @logger.deploy "Executing postdeploy"
+          exec branch_config.post_deploy, cwd: branch_config.destination, callback
+        else
+          callback null
+
+    ], callback
+
+  deployBranch_: (branch, callback) ->
+    @strategy.deploy branch, ((err) =>
+          @logger.deploy "Deploy of branch #{branch} finished"
+          @emit GitDeploy.EventTypes.post_deploy, branch, err
+          callback err
+        ), callback
 
 module.exports = GitDeploy
 
