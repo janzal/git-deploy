@@ -2,13 +2,7 @@ BaseStrategy = require './base-strategy'
 async = require 'async'
 
 class HardcoreStrategy extends BaseStrategy
-  deploy: (branch, callback) ->
-    callback = (()->) unless callback?
 
-    commands = @prepareCommands_ branch
-
-    @processCommands_ branch, commands, (err) =>
-      callback(err)
 
   prepareCommands_: (branch) ->
     temp_path = "#{@config.temp}/#{@application.name}/#{branch}"
