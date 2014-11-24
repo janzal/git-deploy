@@ -1,0 +1,9 @@
+# git-deploy minimal config
+
+temp: "/tmp/git-deploy"
+
+applications:
+  BitbucketApp:
+      branches:
+          master:
+              destination: "/Users/janzaloudek/Development/misc/xx/deploy/BitbucketApp/master"
