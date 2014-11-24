@@ -8,8 +8,7 @@ class BaseStrategy
     callback new Error "Not implement yet"
 
 
-  processCommands_: (commands, callback) ->
-    console.log commands
+  processCommands_: (branch, commands, callback) ->
     async.eachSeries commands, ((cmd, callback) =>
       command = cmd
       options = {}
@@ -18,11 +17,13 @@ class BaseStrategy
         command = cmd.command
         options = cmd.options
 
-      callback() # child = exec command, options, callback
+      setTimeout (()->
+        callback()), (1000 * Math.random())
+      # child = exec command, options, callback
       # child.stdout.pipe process.stdout
       # child.stderr.pipe proceess.stderr
 
-      @logger.info "#{@application.name} from #{@repository.name}: #{command}"
+      @logger.deploy "#{@application.name}\##{branch} from #{@repository.name}: #{command}"
     ), ((err) =>
       callback err
     )
