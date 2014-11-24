@@ -11,9 +11,12 @@ class DeployController
     application_config = req.application_config
 
     logger = req.loggers[application_config.name]
-    logger.add DeployTransport, stream: res
+    logger.add DeployTransport, {
+      stream: res
+      level: "debug"
+    }
 
-    logger.deploy "Deploying application #{req.params.application}"
+    logger.info "Deploying application #{req.params.application}"
 
     handlerFactory = new HandlerFactory req.body
 
@@ -33,14 +36,14 @@ class DeployController
       return next error
 
     gitDeploy = new GitDeploy application_config, repository, strategy, req.config, logger
-    logger.deploy "Deploy of #{application_config.name} started"
+#    logger.info "Deploy of #{application_config.name} started"
     gitDeploy.run (err) ->
       if err
         logger.error "Error occured during deploy.", err
         res.end "Application has not been deployed\n"
         return next()
 
-      logger.deploy "App #{application_config.name} has been deployed!"
+      logger.info "App #{application_config.name} has been deployed!"
       res.end "Successfully deployed!\n"
       next()
 

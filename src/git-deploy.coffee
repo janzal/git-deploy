@@ -22,12 +22,14 @@ class GitDeploy extends EventEmitter
     async.each deployed_branches, ((branch, callback) =>
       @emit GitDeploy.EventTypes.pre_deploy, branch
 
-      @logger.deploy "Deploying branch #{branch}"
+      @logger.info "Deploying branch #{branch}"
       branch_config = @application.branches[branch];
 
       @processDeploy_ branch, branch_config, callback
     ), callback
 
+  loadDeployfile: () ->
+    
   processDeploy_: (branch, branch_config, callback) ->
     async.series [
 
@@ -38,6 +40,7 @@ class GitDeploy extends EventEmitter
       (callback) =>
         if branch_config.pre_deploy
           @logger.deploy "Executing predeploy"
+          @logger.command "#{branch_config.pre_deploy}"
           exec branch_config.pre_deploy, cwd: branch_config.destination, (err, so, se) =>
             @logger.deploy so if so
             @logger.error se if se
@@ -52,6 +55,7 @@ class GitDeploy extends EventEmitter
       (callback) =>
         if branch_config.post_deploy
           @logger.deploy "Executing postdeploy"
+          @logger.command "#{branch_config.post_deploy}"
           exec branch_config.post_deploy, cwd: branch_config.destination, (err, so, se) =>
             @logger.deploy so if so
             @logger.error se if se
@@ -63,7 +67,10 @@ class GitDeploy extends EventEmitter
 
   deployBranch_: (branch, callback) ->
     @strategy.deploy branch, ((err) =>
-          @logger.deploy "Deploy of branch #{branch} finished"
+          if err
+            @logger.error "Cannot deploy branch #{branch}"
+          else
+            @logger.info "Deploy of branch #{branch} finished"
           @emit GitDeploy.EventTypes.post_deploy, branch, err
           callback err
         ), callback

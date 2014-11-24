@@ -20,15 +20,24 @@ program
   .parse process.argv
 
 # instatiate logger
-levels = silly: 0, debug: 1, verbose: 2, info: 3, deploy: 4, warn: 5, error: 6
+levels =
+  silly: 0,
+  debug: 1,
+  verbose: 2,
+  command: 3,
+  deploy: 4,
+  info: 5,
+  warn: 6,
+  error: 7
 
 colors = JSON.parse JSON.stringify winston.config.npm.colors
 colors.deploy = "cyan"
+colors.command = "magenta"
 
 
 transports = [
   new (winston.transports.Console)(colorize: true, level: "debug"),
-  new (winston.transports.File)({filename: "./deploy.log", timestamp: true, json: false })
+  new (winston.transports.File)({filename: "./deploy.log", timestamp: true, json: false, level: "debug"})
 ]
 
 logger_options =

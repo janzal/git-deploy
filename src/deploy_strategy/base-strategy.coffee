@@ -29,7 +29,7 @@ class BaseStrategy
         command = cmd.command
         options = cmd.options
 
-      @logger.deploy "#{@application.name}\##{branch} from #{@repository.name}: #{command}"
+      @logger.command "#{@application.name}\##{branch} from #{@repository.name}: #{command}"
       child = exec command, options, callback
 
       child.stderr.on "data", (data) =>
