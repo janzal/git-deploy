@@ -12,7 +12,7 @@ Usage
 Config
 ------
 
-Config is stored in yaml file. This tool is super easy to config! No magic, it just works.
+Config is stored in yaml file. This tool is super easy to config! No magic, it just works. Example config is in YAML, but you can use JSON as well.
 
 	#
 	# git-deploy example config
@@ -62,7 +62,7 @@ Config contains list of applications, which can be deployed on current server.
 
 .deployfile
 -----------
-Deploy file should be in your project root. It is not mandatory to use .deployfile, but there you can override server actions. It uses YAML as well. Currently, there is only `post_deploy` parameter.
+Deploy file should be in your project root. It is not mandatory to use .deployfile, but there you can override server actions. It uses also uses YAML. Currently, there is only `post_deploy` parameter.
 
 	master:
 		post_deploy: "composer update; composer install"
