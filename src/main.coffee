@@ -20,8 +20,23 @@ program
   .parse process.argv
 
 # instatiate logger
-logger = new (winston.Logger)(transports: [ new (winston.transports.Console)(colorize: true, level: "debug"),
-                                            new (winston.transports.File)({filename: "./deploy.log", timestamp: true, json: false }) ])
+levels = silly: 0, debug: 1, verbose: 2, info: 3, deploy: 4, warn: 5, error: 6
+
+colors = JSON.parse JSON.stringify winston.config.npm.colors
+colors.deploy = "cyan"
+
+
+transports = [
+  new (winston.transports.Console)(colorize: true, level: "debug"),
+  new (winston.transports.File)({filename: "./deploy.log", timestamp: true, json: false })
+]
+
+logger_options =
+  levels: levels
+  colors: colors
+  transports: transports
+
+logger = new (winston.Logger)(logger_options)
 
 # load config
 unless program.args[0]?
@@ -34,11 +49,25 @@ logger.debug "config path is #{config_path}"
 
 # loading config
 config
+extname = (path.extname config_path).toLowerCase()
 try
-  config = yaml.safeLoad(fs.readFileSync(config_path, "utf8"));
+  file_content = fs.readFileSync config_path, "utf8"
+
+  switch extname
+    when ".yaml" then config = yaml.safeLoad file_content
+    when ".json" then config = JSON.parse file_content
+    else throw new Error "Cannot open config in this format. Detected extension '#{extname}'. YAML and JSON are supported"
 catch error
   logger.error "Cannot open config file '#{config_path}'. Due to error '#{error.message}'"
   process.exit 1
+
+# create logger for each application
+applications = Object.keys config.applications
+
+loggers = {}
+for application in applications
+  logger.debug "Adding logger for #{application}"
+  loggers[application] = new winston.Logger logger_options
 
 # create new app
 app = express()
@@ -65,6 +94,11 @@ app.use (req, res, next) ->
   req.logger = logger
   next()
 
+# add app loggers
+app.use (req, res, next) ->
+  req.loggers = loggers
+  next()
+
 # add config
 app.use (req, res, next) ->
   req.config = config
@@ -81,12 +115,22 @@ webUiController = new WebUiController()
 # ui routes
 ui_router.get "", webUiController.isRunning.bind webUiController
 
+# hook params
+hook_router
+  .param "application", (req, res, next, application) ->
+    req.application_config = req.config.applications[application]
+
+    unless req.application_config
+      return next new Error "Unkown application name #{application}"
+
+    req.application_config.name = application
+    next()
+
 # hook routes
 hook_router
   .route "/deploy/:application"
   .post deployController.deploy.bind deployController
-
-hook_router.use deployController.handlePostDeploy.bind deployController
+  .all deployController.handlePostDeploy.bind deployController
 
 # apply routers to app
 app.use "/hooks", hook_router
