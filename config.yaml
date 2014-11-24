@@ -27,7 +27,7 @@ applications:
         master:
             destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
             # post_deploy and pre_deploy will be executed in context of destination folder
-            post_deploy: "composer install"
+            post_deploy: ""
             pre_deploy: ""
 
         # ...and you can handle multiple branches
