@@ -17,24 +17,35 @@ ui: true
 # keys are application identifiers and values are objects containing deployment details
 applications:
 
-  firstApp: # app name
-    # these three items are only mandatory for deployment
-    handler: "bitbucket" # handler - currently is supported only bitbucket and github
-    strategy: "clone" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
+  BitbucketApp: # app name
+      # these three items are only mandatory for deployment
+      handler: "bitbucket" # handler - currently is supported only bitbucket and github. If not filled, git-deploy will try to detect handler itself
+      strategy: "clone" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
+      allow_deployfile: true # if true, .deployfile will be executed
 
-    branches:
-        # branch deploy configuration
-        master:
-            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
-            # post_deploy and pre_deploy will be executed in context of destination folder
-            post_deploy: "echo 'PWD:' $PWD"
-            pre_deploy: "echo 'PWD:' $PWD"
+      branches:
+          # branch deploy configuration
+          master:
+              destination: "/Users/janzaloudek/Development/misc/xx/deploy/BitbucketApp/master" # where to deploy application
+              # post_deploy and pre_deploy will be executed in context of destination folder
+              post_deploy: "echo 'PWD:' $PWD"
+              pre_deploy: "echo 'PWD:' $PWD"
 
-        # ...and you can handle multiple branches
-        dev:
-            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
+          # ...and you can handle multiple branches
+          dev:
+              destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/dev"
 
-        staging:
-            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/staging"
+          staging:
+              destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/staging"
+
+   GithubApp:
+       handler: "github"
+       strategy: "clone"
+
+       branches:
+           master:
+               destination: "/Users/janzaloudek/Development/misc/xx/deploy/GithubApp/master"
+           dev:
+               destination: "/Users/janzaloudek/Development/misc/xx/deploy/GithubApp/dev"
 
 
