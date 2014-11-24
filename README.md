@@ -14,6 +14,18 @@ Config
 
 Config is stored in yaml file. This tool is super easy to config! No magic, it just works. Example config is in YAML, but you can use JSON as well.
 
+Are you scared of large and magic configuration files? Not anymore. Just few lines of config does the work.
+
+	temp: "/tmp/git-deploy"
+	
+	applications:
+	  SimpleApp:
+	      branches:
+	          master:
+	              destination: "/var/apps/SimpleApp/master"
+
+### Full-featured config
+
 	#
 	# git-deploy example config
 	#
@@ -52,13 +64,10 @@ Config is stored in yaml file. This tool is super easy to config! No magic, it j
 	
 	        staging:
 	            destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/staging"
-	
-	
-
-
 
 	
-Config contains list of applications, which can be deployed on current server.
+Config contains list of applications and their configurations, which can be deployed on current server.
+
 
 .deployfile
 -----------
