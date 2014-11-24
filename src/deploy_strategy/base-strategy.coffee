@@ -18,7 +18,7 @@ class BaseStrategy
         options = cmd.options
 
       setTimeout (()->
-        callback()), (1000 * Math.random())
+        callback()), (100 * Math.random())
       # child = exec command, options, callback
       # child.stdout.pipe process.stdout
       # child.stderr.pipe proceess.stderr

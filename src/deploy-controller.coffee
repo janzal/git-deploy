@@ -2,6 +2,7 @@ GitDeploy = require './git-deploy'
 HandlerFactory = require './handlers/handler-factory'
 StrategyFactory = require './deploy_strategy/strategy-factory'
 DeployTransport = require './deploy-transport'
+winston = require 'winston'
 
 class DeployController
   constructor: () ->
@@ -12,7 +13,7 @@ class DeployController
     logger = req.loggers[application_config.name]
     logger.add DeployTransport, stream: res
 
-    res.write "Deploying application #{req.params.application}\n"
+    logger.deploy "Deploying application #{req.params.application}"
 
     handlerFactory = new HandlerFactory req.body
 
@@ -42,6 +43,6 @@ class DeployController
   handlePostDeploy: (req, res, next) ->
     logger = req.loggers[req.application_config.name]
     logger.remove DeployTransport
-
+    next()
 
 module.exports = DeployController;

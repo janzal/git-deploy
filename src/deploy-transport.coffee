@@ -1,20 +1,16 @@
-var util = require('util'),
-  winston = require('winston');
+util = require('util')
+winston = require('winston')
 
-var DeployLogger = winston.transports.DeployLogger = function (options) {
-  this.name = 'deployLogger';
-this.level = options.level || 'info';
+class DeployTransport extends winston.Transport
+  constructor: (options) ->
+    @name = 'DeployTransport'
+    @level = options.level or 'info'
 
-this.stream = options.stream;
-};
+    @stream = options.stream
 
-DeployLogger.prototype.name = 'deployLogger';
+  log: (level, msg, meta, callback) ->
+    @stream.write "#{msg}\n"
+    callback null, true
 
-util.inherits(DeployLogger, winston.Transport);
-
-DeployLogger.prototype.log = function (level, msg, meta, callback) {
-this.stream.write(msg + "\n");
-callback(null, true);
-};
-
-module.exports = DeployLogger;
+winston.transports.DeployTransport = DeployTransport
+module.exports = DeployTransport
