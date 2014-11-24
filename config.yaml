@@ -20,15 +20,15 @@ applications:
   firstApp: # app name
     # these three items are only mandatory for deployment
     handler: "bitbucket" # handler - currently is supported only bitbucket and github
-    strategy: "hardcore" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
+    strategy: "clone" # there are plenty of strategies, which can be used for deploy. Currently is supported only hardcore
 
     branches:
         # branch deploy configuration
         master:
             destination: "/Users/janzaloudek/Development/misc/xx/deploy/firstApp/master" # where to deploy application
             # post_deploy and pre_deploy will be executed in context of destination folder
-            post_deploy: ""
-            pre_deploy: ""
+            post_deploy: "echo 'PWD:' $PWD"
+            pre_deploy: "echo 'PWD:' $PWD"
 
         # ...and you can handle multiple branches
         dev:
