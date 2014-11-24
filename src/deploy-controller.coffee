@@ -35,7 +35,11 @@ class DeployController
     gitDeploy = new GitDeploy application_config, repository, strategy, req.config, logger
     logger.deploy "Deploy of #{application_config.name} started"
     gitDeploy.run (err) ->
-      return next err if err?
+      if err
+        logger.error "Error occured during deploy.", err
+        res.end "Application has not been deployed\n"
+        return next()
+
       logger.deploy "App #{application_config.name} has been deployed!"
       res.end "Successfully deployed!\n"
       next()

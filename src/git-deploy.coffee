@@ -38,7 +38,10 @@ class GitDeploy extends EventEmitter
       (callback) =>
         if branch_config.pre_deploy
           @logger.deploy "Executing predeploy"
-          exec branch_config.pre_deploy, cwd: branch_config.destination, callback
+          exec branch_config.pre_deploy, cwd: branch_config.destination, (err, so, se) =>
+            @logger.deploy so if so
+            @logger.error se if se
+            callback err
         else
           callback null
 
@@ -49,7 +52,10 @@ class GitDeploy extends EventEmitter
       (callback) =>
         if branch_config.post_deploy
           @logger.deploy "Executing postdeploy"
-          exec branch_config.post_deploy, cwd: branch_config.destination, callback
+          exec branch_config.post_deploy, cwd: branch_config.destination, (err, so, se) =>
+            @logger.deploy so if so
+            @logger.error se if se
+            callback err
         else
           callback null
 
