@@ -11,7 +11,7 @@ class BitbucketHandler extends BaseHandler
 
     result =
       branches: branches
-      url: "git://bitbucket.org/#{@info.repository.absolute_url}"
+      url: "git@bitbucket.org:#{@info.repository.owner}/#{@info.repository.slug}.git"
       name: @info.repository.name
       author: @info.user
 
