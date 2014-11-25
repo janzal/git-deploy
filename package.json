@@ -1,6 +1,6 @@
 {
   "name": "node-git-deploy",
-  "version": "0.1.0-alpha",
+  "version": "0.1.1-alpha",
   "bin": {
     "git-deploy": "./index.js"
   },
