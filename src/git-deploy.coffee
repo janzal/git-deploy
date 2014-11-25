@@ -73,7 +73,7 @@ class GitDeploy extends EventEmitter
             return callback null, null unless @application.allow_deployfile
 
             deployfile = @loadDeployfile branch_config.destination
-            if deployfile[branch]
+            if deployfile?[branch]
               @logger.deploy "Using .deployfile post deploy"
               if deployfile[branch].override
                 @logger.info "Default post deploy is overriden"
@@ -87,7 +87,7 @@ class GitDeploy extends EventEmitter
               callback null, deployfile
 
           (deployfile, callback) =>
-            if branch_config.post_deploy and (not deployfile? or not deployfile[branch]?.override)
+            if branch_config.post_deploy and (not deployfile? or not deployfile?[branch]?.override)
               @logger.deploy "Executing postdeploy"
 
               @logger.command "#{branch_config.post_deploy}"
@@ -111,18 +111,3 @@ class GitDeploy extends EventEmitter
         ), callback
 
 module.exports = GitDeploy
-
-#  # make a new blank repository in the current directory
-#git init
-#
-## add a remote
-#git remote add origin url://to/source/repository
-#
-## fetch a commit (or branch or tag) of interest
-## Note: the full history of this commit will be retrieved
-#git fetch origin <sha1-of-commit-of-interest>
-#
-#  # reset this repository's master branch to the commit of interest
-#  git reset --hard FETCH_HEAD
-#
-#module.exports = GitDeploy
