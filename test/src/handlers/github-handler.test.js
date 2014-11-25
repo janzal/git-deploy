@@ -31,7 +31,11 @@
     return describe("#extractRepositoryInfo", function() {
       var handler;
       handler = new GithubHandler(github_payload);
-      return it("should extract branches");
+      return it("should extract branches", function() {
+        var info;
+        info = handler.extractRepositoryInfo();
+        return expect(info.branches['gh-pages']).to.be["instanceof"](Array);
+      });
     });
   });
 
