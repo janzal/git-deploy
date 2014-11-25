@@ -18,7 +18,10 @@ class DeployTransport extends winston.Transport
     "(#{result.join ", "})" if result.length
 
   log: (level, msg, meta, callback) ->
-    @stream.write "#{level}: #{msg}"
+    @stream.write "error: " if level is "error"
+    @stream.write "\# " if level is "command"
+
+    @stream.write "#{msg}"
 
     stringified_meta = @renderObject meta
     @stream.write " #{stringified_meta}" if stringified_meta
