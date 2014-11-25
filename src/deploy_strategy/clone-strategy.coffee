@@ -15,7 +15,7 @@ class CloneStrategy extends BaseStrategy
       "rm -rf #{temp_path}"
       "mkdir -p #{temp_path}"
       {
-       command: "git status || git clone --depth 1 #{@repository.url} ./"
+       command: "git status || git clone -b #{branch} --single-branch --depth 1 #{@repository.url} ./"
        options:
          cwd: temp_path
       },
