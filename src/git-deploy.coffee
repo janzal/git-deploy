@@ -2,6 +2,9 @@
 {EventEmitter} = require 'events'
 async = require 'async'
 mkdirp = require 'mkdirp'
+path = require 'path'
+yaml = require 'js-yaml'
+fs = require 'fs'
 
 class GitDeploy extends EventEmitter
   @EventTypes =
@@ -28,7 +31,19 @@ class GitDeploy extends EventEmitter
       @processDeploy_ branch, branch_config, callback
     ), callback
 
-  loadDeployfile: () ->
+  loadDeployfile: (dest_path) ->
+    config_path = path.join dest_path, ".deployfile"
+
+    return null unless fs.existsSync config_path
+
+    config
+    try
+      file_content = fs.readFileSync config_path, "utf8"
+      config = yaml.safeLoad file_content
+    catch error
+      @logger.error "Cannot load .deployfile"
+
+    config
     
   processDeploy_: (branch, branch_config, callback) ->
     async.series [
@@ -53,16 +68,36 @@ class GitDeploy extends EventEmitter
         @deployBranch_ branch, callback
 
       (callback) =>
-        if branch_config.post_deploy
-          @logger.deploy "Executing postdeploy"
-          @logger.command "#{branch_config.post_deploy}"
-          exec branch_config.post_deploy, cwd: branch_config.destination, (err, so, se) =>
-            @logger.deploy so if so
-            @logger.error se if se
-            callback err
-        else
-          callback null
+        async.waterfall [
+          (callback) =>
+            return callback null, null unless @application.allow_deployfile
 
+            deployfile = @loadDeployfile branch_config.destination
+            if deployfile[branch]
+              @logger.deploy "Using .deployfile post deploy"
+              if deployfile[branch].override
+                @logger.info "Default post deploy is overriden"
+              command = deployfile[branch].post_deploy
+              @logger.command "#{command}"
+              exec command, cwd: branch_config.destination, (err, so, se) =>
+                @logger.deploy so if so
+                @logger.error se if se
+                callback err, deployfile
+            else
+              callback null, deployfile
+
+          (deployfile, callback) =>
+            if branch_config.post_deploy and (not deployfile? or not deployfile[branch]?.override)
+              @logger.deploy "Executing postdeploy"
+
+              @logger.command "#{branch_config.post_deploy}"
+              exec branch_config.post_deploy, cwd: branch_config.destination, (err, so, se) =>
+                @logger.deploy so if so
+                @logger.error se if se
+                callback err
+            else
+              callback null
+        ], callback
     ], callback
 
   deployBranch_: (branch, callback) ->
