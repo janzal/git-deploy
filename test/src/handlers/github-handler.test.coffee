@@ -23,7 +23,7 @@ describe "github handler", ->
   describe "#extractRepositoryInfo", ->
     handler = new GithubHandler github_payload
 
-    it "should extract branches"
+    it "should extract branches", ->
       info = handler.extractRepositoryInfo()
 
       expect(info.branches['gh-pages']).to.be.instanceof Array
