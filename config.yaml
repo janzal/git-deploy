@@ -47,6 +47,8 @@ applications:
        branches:
            master:
                destination: "/Users/janzaloudek/Development/misc/xx/deploy/GithubApp/master"
+               post_deploy: "ls -la"
+               pre_deploy: "ls -la"
            dev:
                destination: "/Users/janzaloudek/Development/misc/xx/deploy/GithubApp/dev"
 
