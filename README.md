@@ -77,6 +77,7 @@ Deploy file should be in your project root. It is not mandatory to use .deployfi
 		post_deploy: "composer update; composer install"
 	
 	dev:
+		override: false
 		post_deploy: "npm install; composer install"
 	
 
@@ -88,6 +89,13 @@ Just run
 	gulp
 
 Job done!
+
+
+Testing
+-------
+
+	gulp test
+	
 
 License
 -------
