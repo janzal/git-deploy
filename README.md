@@ -7,7 +7,7 @@ Usage
 -----
 
 	npm install -g node-git-deploy
-	git-deploy <config>
+	git-deploy-server <config>
 	
 Config
 ------
@@ -37,6 +37,8 @@ Are you scared of large and magic configuration files? Not anymore. Just few lin
 	
 	# enable/disable ui
 	ui: true
+	# enable/disable api
+  api: true/
 	# key-value basic authorization for UI controls
 	# auth:
 	#    admin: "123456"

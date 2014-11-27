@@ -6,13 +6,16 @@ class HandlerFactory
     bitbucket: BitbucketHandler
     github: GithubHandler
 
-  constructor: (@info) ->
+  constructor: () ->
 
   getHandlerByName: (name) ->
     switch name
-      when "bitbucket" then new BitbucketHandler @info
+      when "bitbucket" then new BitbucketHandler()
+      when "github" then new GithubHandler()
       else throw new Error "Unknown handler #{name}"
 
-  detectHandler: () ->
-#    for name, handler in
+  detectHandler: (payload) ->
+#    for name, handler in HandlerFactory.handlers
+#      handler.canHandle
+
 module.exports = HandlerFactory

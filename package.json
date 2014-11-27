@@ -2,9 +2,9 @@
   "name": "node-git-deploy",
   "version": "0.1.1-alpha",
   "bin": {
-    "git-deploy": "./index.js"
+    "git-deploy-server": "./index.js"
   },
-  "description": "Simple git-based deployment system",
+  "description": "Simple git-based deployment system (server)",
   "main": "index.js",
   "scripts": {
     "prepublish": "gulp"

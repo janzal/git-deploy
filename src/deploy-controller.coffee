@@ -18,7 +18,7 @@ class DeployController
 
     logger.info "Deploying application #{req.params.application}"
 
-    handlerFactory = new HandlerFactory req.body
+    handlerFactory = new HandlerFactory()
 
     handler
     try
@@ -26,7 +26,8 @@ class DeployController
     catch error
       return next error
 
-    repository = handler.extractRepositoryInfo()
+    payload = handler.extractPayload req
+    repository = handler.extractRepositoryInfo payload
 
     strategyFactory = new StrategyFactory application_config, repository, req.config, logger
     strategy
@@ -36,7 +37,6 @@ class DeployController
       return next error
 
     gitDeploy = new GitDeploy application_config, repository, strategy, req.config, logger
-#    logger.info "Deploy of #{application_config.name} started"
     gitDeploy.run (err) ->
       if err
         logger.error "Error occured during deploy.", err

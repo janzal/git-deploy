@@ -116,6 +116,9 @@ app.use (req, res, next) ->
 # add json body parser
 hook_router.use BodyParser.json()
 
+# add urlencoded body parser
+hook_router.use BodyParser.urlencoded()
+
 # controllers
 deployController = new DeployController()
 webUiController = new WebUiController()
