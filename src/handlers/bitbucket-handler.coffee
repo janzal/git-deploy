@@ -2,9 +2,7 @@ BaseHandler = require './base-handler'
 
 class BitbucketHandler extends BaseHandler
   extractPayload: (request) ->
-    console.log request.body
-
-    request.body.payload
+    JSON.parse request.body.payload
 
   extractRepositoryInfo: (info) ->
     branches = {}
